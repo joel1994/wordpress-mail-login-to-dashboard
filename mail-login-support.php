@@ -1,9 +1,4 @@
 <?php
-add_action('login_footer','mail_login_link');
-function mail_login_link() { 
-	echo '<p style="width: 30px; margin: auto; padding-top: 10px;"><a class="button" style="color: #999; margin-left: 24px;" href="'.get_template_directory_uri().'/mail-login.php">通过邮件验证身份登录</a></p>';
-}
-
 function mail_login_access_check($hash){
 	$email = generrate_access_token($hash,$operation='DECODE');
 	if ($email != '') login_required($email);
@@ -25,7 +20,7 @@ function login_required($user_email){
 function send_mail_login_token($email){
 	if (get_user_by('email',$email)) {
 		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-		$wp_email = 'no-reply@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+		$wp_email = 'blog@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 		$subject = '[' . $blogname . '] 后台登录授权申请';
 		$message = '如果您确定该申请，请点击链接授权：';
 		$message .= mail_login_access_link($email);
